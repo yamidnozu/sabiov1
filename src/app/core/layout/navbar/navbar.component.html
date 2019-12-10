@@ -1,0 +1,63 @@
+<app-toolbar [titulo]="titulo"></app-toolbar>
+<mat-sidenav-container class="sidenav-container">
+	<mat-sidenav class="sidenav mat-elevation-z4" #sidenav [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+		[mode]="(isHandset$ | async) ? 'over' : 'side'" (closed)="navbarCerrada()" [opened]="(isOpenSidenav$ | async)">
+		<mat-nav-list>
+			<ng-container *ngFor="let item of menuItems">
+
+				<!-- Si es un menu normal -->
+				<a *ngIf="!item.submenu" mat-list-item [routerLink]="item.ruta" routerLinkActive="list-item-active"
+					[matTooltip]="item.titulo" matTooltipPosition="after">
+					<ng-container [ngTemplateOutlet]="icono" [ngTemplateOutletContext]="{item:item}">
+					</ng-container>
+				</a>
+
+				<!-- si tiene un submenu -->
+				<a *ngIf="item.submenu" mat-list-item [matMenuTriggerFor]="submenu"
+					[matMenuTriggerData]="{items: item.submenu}" [matTooltip]="item.titulo" matTooltipPosition="after">
+					<ng-container [ngTemplateOutlet]="icono" [ngTemplateOutletContext]="{item:item}">
+					</ng-container>
+				</a>
+
+				<mat-divider></mat-divider>
+			</ng-container>
+		</mat-nav-list>
+	</mat-sidenav>
+
+	<mat-sidenav-content>
+		<router-outlet></router-outlet>
+	</mat-sidenav-content>
+
+</mat-sidenav-container>
+
+
+<!-- icono del menú -->
+<ng-template #icono let-item="item">
+	<mat-icon matListIcon *ngIf="item.icono else iconoDefecto">{{item.icono}}</mat-icon>
+	<ng-template #iconoDefecto>
+		<mat-icon matListIcon>list</mat-icon>
+	</ng-template>
+</ng-template>
+
+
+<!-- submenu -->
+<mat-menu #submenu="matMenu" x-position="after">
+
+	<ng-template matMenuContent let-items="items">
+		<mat-nav-list>
+
+			<ng-container *ngFor="let item of items">
+				<!-- Item que enruta a un componente -->
+				<a mat-list-item [routerLink]="item.ruta" routerLinkActive="list-item-active" [matTooltip]="item.titulo"
+					matTooltipPosition="after">
+
+					<ng-container [ngTemplateOutlet]="icono" [ngTemplateOutletContext]="{item:item}">
+					</ng-container>
+
+					<!-- El submenu con título -->
+					{{item.titulo}}
+				</a>
+			</ng-container>
+		</mat-nav-list>
+	</ng-template>
+</mat-menu>
