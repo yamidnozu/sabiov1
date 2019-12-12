@@ -6,4 +6,4 @@ import { UsuarioComponent } from "./usuario.component";
   declarations: [UsuarioComponent],
   exports: [UsuarioComponent]
 })
-export class UsuaModule {}
+export class UsuarioModule {}
