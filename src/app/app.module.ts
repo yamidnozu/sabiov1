@@ -20,6 +20,7 @@ import { AngularFireAuthGuard } from "@angular/fire/auth-guard";
     BrowserAnimationsModule,
     FirebaseModule
   ],
+  exports: [SharedModule],
   providers: [AngularFireAuthGuard],
   declarations: [AppComponent],
   bootstrap: [AppComponent]
