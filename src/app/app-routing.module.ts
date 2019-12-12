@@ -1,6 +1,9 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
+import { AngularFireAuthGuard } from "@angular/fire/auth-guard";
+import { redirectUnauthorizedTo, canActivate } from "@angular/fire/auth-guard";
 
+const redirectUnauthorizedToLanding = redirectUnauthorizedTo(["auth/login"]);
 const routes: Routes = [
   {
     path: "",
@@ -15,7 +18,8 @@ const routes: Routes = [
   {
     path: "usuario",
     loadChildren: () =>
-      import("./modulos/usuario/usuario.module").then(m => m.UsuarioModule)
+      import("./modulos/usuario/usuario.module").then(m => m.UsuarioModule),
+      ...canActivate(redirectUnauthorizedToLanding)
   }
 ];
 
